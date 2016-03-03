@@ -23,6 +23,7 @@ namespace Dicom.Network
         private bool disposed;
 
         private readonly int port;
+        private readonly string ipAddress;
 
         private readonly string certificateName;
 
@@ -45,8 +46,10 @@ namespace Dicom.Network
         /// <param name="options">Service options.</param>
         /// <param name="fallbackEncoding">Fallback encoding.</param>
         /// <param name="logger">Logger.</param>
-        public DicomServer(int port, string certificateName = null, DicomServiceOptions options = null, Encoding fallbackEncoding = null, Logger logger = null)
+        /// <param name="ipAddress">IP Address to bind the server, leave null for any available.</param>
+        public DicomServer(int port, string certificateName = null, DicomServiceOptions options = null, Encoding fallbackEncoding = null, Logger logger = null, string ipAddress = null)
         {
+            this.ipAddress = ipAddress;
             this.port = port;
             this.certificateName = certificateName;
             this.fallbackEncoding = fallbackEncoding;
@@ -72,7 +75,6 @@ namespace Dicom.Network
 
             this.disposed = false;
         }
-
         #endregion
 
         #region PROPERTIES
@@ -160,7 +162,7 @@ namespace Dicom.Network
             {
                 var noDelay = this.Options != null ? this.Options.TcpNoDelay : DicomServiceOptions.Default.TcpNoDelay;
 
-                var listener = NetworkManager.CreateNetworkListener(this.port);
+                var listener = NetworkManager.CreateNetworkListener(this.port, this.ipAddress);
                 await listener.StartAsync().ConfigureAwait(false);
                 this.IsListening = true;
 

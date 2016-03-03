@@ -27,12 +27,11 @@ namespace Dicom.Network
         /// <summary>
         /// Initializes a new instance of the <see cref="DesktopNetworkListener"/> class. 
         /// </summary>
-        /// <param name="port">
-        /// TCP/IP port to listen to.
-        /// </param>
-        internal DesktopNetworkListener(int port)
+        /// <param name="port">TCP/IP port to listen to.</param>
+        /// <param name="ipAddress">Specific IP address to bind, otherwise any address will be bound.</param>
+        internal DesktopNetworkListener(int port, IPAddress ipAddress = null)
         {
-            this.listener = new TcpListener(IPAddress.Any, port);
+            this.listener = new TcpListener(ipAddress ?? IPAddress.Any, port);
         }
 
         #endregion

@@ -5,6 +5,7 @@ namespace Dicom.Network
 {
     using System;
     using System.Globalization;
+    using System.Net;
     using System.Net.NetworkInformation;
     using System.Net.Sockets;
 
@@ -55,10 +56,14 @@ namespace Dicom.Network
         /// Platform-specific implementation to create a network listener object.
         /// </summary>
         /// <param name="port">Network port to listen to.</param>
+        /// <param name="ipAddress">Specific IP address to bind.</param>
         /// <returns>Network listener implementation.</returns>
-        protected override INetworkListener CreateNetworkListenerImpl(int port)
+        protected override INetworkListener CreateNetworkListenerImpl(int port, string ipAddressString = null)
         {
-            return new DesktopNetworkListener(port);
+            // Parse out the IP address string as an IPAddress object for creating the DesktopNetworkListener
+            var ipAddress = ipAddressString == null ? null : IPAddress.Parse(ipAddressString);
+
+            return new DesktopNetworkListener(port, ipAddress);
         }
 
         /// <summary>

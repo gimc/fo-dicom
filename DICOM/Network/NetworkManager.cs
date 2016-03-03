@@ -67,9 +67,9 @@ namespace Dicom.Network
         /// </summary>
         /// <param name="port">Network port to listen to.</param>
         /// <returns>Network listener implementation.</returns>
-        public static INetworkListener CreateNetworkListener(int port)
+        public static INetworkListener CreateNetworkListener(int port, string ipAddress = null)
         {
-            return implementation.CreateNetworkListenerImpl(port);
+            return implementation.CreateNetworkListenerImpl(port, ipAddress);
         }
 
         /// <summary>
@@ -112,8 +112,9 @@ namespace Dicom.Network
         /// Platform-specific implementation to create a network listener object.
         /// </summary>
         /// <param name="port">Network port to listen to.</param>
+        /// <param name="ipAddress">Specific IP address to bind.</param>
         /// <returns>Network listener implementation.</returns>
-        protected abstract INetworkListener CreateNetworkListenerImpl(int port);
+        protected abstract INetworkListener CreateNetworkListenerImpl(int port, string ipAddress = null);
 
         /// <summary>
         /// Platform-specific implementation to create a network stream object.
